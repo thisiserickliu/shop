@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}View Product | Trendy Fashion Store{% endblock %}
+
+{% block body %}
+<div class="row">
+	<div class="col-lg-12">
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ url_for('index') }}">首頁</a>
+			</li>
+			<li class="active">商品預覽</li>
+		</ol>
+	</div>
+</div>
+
+<div class="row pad">
+  <div class="col-lg-5">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div id="productCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          {% for image in product.images %}
+          <li data-target="#productCarousel" data-slide-to="{{ loop.index0 }}" class="{{ 'active' if loop.first else '' }}"></li>
+          {% endfor %}
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+          {% for image in product.images %}
+          <div class="item {% if loop.first %}active{% endif %}">
+            <img src="{{ image.url }}" alt="Product Image" >
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#productCarousel" role="button" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#productCarousel" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+  </div>
+<div class="col-lg-7">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">商品狀態</h3>
+			</div>
+			<div class="panel-body">
+				<h3>{{ product.name }}
+					{% if product.stock > 0 %}
+					<small>(有存貨)</small>
+				    {% else %}
+					<small>(缺貨)</small>
+					{% endif %}
+				    </h3>
+				<h4>&dollar;{{ product.price }}</h4>
+				<hr />
+				{{ product.description1 }}
+				<br>
+				{{ product.description2 }}
+				<br>
+				{{ product.description3 }}
+				<hr />
+                <form action="{{ url_for('add_to_cart')}}" method="POST">
+					  {% if product.stock > 0 %}
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="row">
+							<div class="col-lg-12">
+								數量
+							</div>
+							<div class="col-lg-12">
+								{{ form.csrf_token }}
+
+								{{ form.quantity(class='form-control',type='number', min=1, max=product.stock, step=1, value=1) }}
+
+								{{ form.id(value=product.id) }}
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+			<div class="panel-footer">
+				{% if product.stock > 0 %}
+				<button type="submit" class="btn btn-primary">
+					<i class="glyphicon glyphicon-shopping-cart"></i> 加入購物車
+				</button>
+				{% endif %}
+			</div>
+			</form>
+		</div>
+</div>
+
+
+<!--	<div class="col-lg-7">-->
+<!--		<div class="panel panel-primary">-->
+<!--			<div class="panel-heading">-->
+<!--				<h3 class="panel-title">商品狀態</h3>-->
+<!--			</div>-->
+<!--			<div class="panel-body">-->
+<!--				<h3>{{ product.name }}-->
+<!--					{% if product.stock > 0 %}-->
+<!--					<small>(有存貨)</small>-->
+<!--				    {% else %}-->
+<!--					<small>(缺貨)</small>-->
+<!--					{% endif %}-->
+<!--				    </h3>-->
+<!--				<h4>&dollar;{{ product.price }}</h4>-->
+<!--				<hr />-->
+<!--				{{ product.description1 }}-->
+<!--				<br>-->
+<!--				{{ product.description2 }}-->
+<!--				<br>-->
+<!--				{{ product.description3 }}-->
+<!--				<hr />-->
+<!--                <form action="{{ url_for('add_to_cart')}}" method="POST">-->
+<!--					  {% if product.stock > 0 %}-->
+<!--				<div class="row">-->
+<!--					<div class="col-lg-4">-->
+<!--						<div class="row">-->
+<!--							<div class="col-lg-12">-->
+<!--								數量-->
+<!--							</div>-->
+<!--							<div class="col-lg-12">-->
+<!--								{{ form.csrf_token }}-->
+
+<!--								{{ form.quantity(class='form-control',type='number', min=1, max=product.stock, step=1, value=1) }}-->
+
+<!--								{{ form.id(value=product.id) }}-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				{% endif %}-->
+<!--			</div>-->
+<!--			<div class="panel-footer">-->
+<!--				{% if product.stock > 0 %}-->
+<!--				<button type="submit" class="btn btn-primary">-->
+<!--					<i class="glyphicon glyphicon-shopping-cart"></i> 加入購物車-->
+<!--				</button>-->
+<!--				{% endif %}-->
+<!--			</div>-->
+<!--			</form>-->
+<!--		</div>-->
+
+		<div role="tabpanel">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active">
+					<a href="#description" aria-controls="description" role="tab" data-toggle="tab">商品描述</a>
+				</li>
+				<li role="presentation">
+					<a href="#shipping" aria-controls="shipping" role="tab" data-toggle="tab">購物須知</a>
+				</li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="description">
+					<h3>商品描述</h3>
+					{{ product.description1 }}
+					<br>
+					{{ product.description2 }}
+					<br>
+					{{ product.description3 }}
+				</div>
+				<div role="tabpanel" class="tab-pane" id="shipping">
+					<h3>購物須知</h3>
+					   購買恕無法退貨
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}

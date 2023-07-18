@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}結帳 | 吉祥玉品{% endblock %}
+
+{% block body %}
+<div class="row">
+	<div class="col-lg-8">
+		<h3 class="bold">
+			<i class="glyphicon glyphicon-pencil"></i> 購物資訊
+		</h3>
+
+		<div class="panel panel-primary">
+			<form method="POST" action="{{ url_for('checkout') }}">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<h4 class="bold">個人資料</h4>
+					</div>
+					{{ form.csrf_token }}
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>稱呼</label>
+							<select name="title" id="title" class="form-control">
+								<option value="">先生</option>
+								<option value="">太太</option>
+								<option value="">小姐</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>姓名</label>
+							{{ form.fullname(class='form-control') }}
+						</div>
+
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>電話號碼</label>
+							{{ form.phone_number(class='form-control') }}
+						</div>
+						<div class="form-group">
+							<label>Email</label>
+							{{ form.email(class='form-control') }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+						<h4 class="bold">地址</h4>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>縣市（台灣）</label>
+							{{ form.city(class='form-control') }}
+						</div>
+						<div class="form-group">
+							<label>地址</label>
+							{{ form.address(class='form-control') }}
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+						<h4 class="bold">付款方式</h4>
+					</div>
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>選擇付款方式</label>
+							{{ form.payment_type(class='form-control') }}
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="panel-footer">
+				<button type="submit" class="btn btn-primary btn-sm">
+					送出訂單
+				</button>
+			</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="col-lg-4">
+		<h3 class="bold">
+			<i class="glyphicon glyphicon-th-list"></i> 購物車資訊
+		</h3>
+
+		<div class="panel panel-primary">
+			<div class="panel-body">
+				目前購物車狀態
+			</div>
+			<ul class="list-group">
+				<li class="list-group-item">
+					<p>
+						{{total_quantity}} 件物品 <strong class="pull-right">&dollar;{{ grand_total }}</strong>
+					</p>
+
+				</li>
+				<li class="list-group-item">
+					<p>總共 <strong class="pull-right">&dollar;{{ grand_total }}</strong></p>
+
+				</li>
+			</ul>
+		</div>
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Benefits</h3>
+			</div>
+			<div class="panel-body">
+				Some of the benefits of shopping with us include:
+			</div>
+			<ul class="list-group">
+				<li class="list-group-item">Buyer Protection</li>
+				<li class="list-group-item">Next Day Delivery</li>
+				<li class="list-group-item">Flexible Payment Options</li>
+				<li class="list-group-item">7day Money Back Guarantee</li>
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}
